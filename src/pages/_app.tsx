@@ -30,7 +30,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     dispatch({ type: 'UPDATE_WINDOW', id: 'IE_WINDOW', props: {
-      width: 1000,
+      width: '1000',
       title: `${window.location.href} - Microsoft Internet Explorer`,
       icon: <HtmlPage />,
       menu: [
@@ -83,7 +83,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           ),
         },
       ]
-    },
+    } as any,
     element: () => {
       return (
         <IEModal>
