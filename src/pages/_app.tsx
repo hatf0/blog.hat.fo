@@ -1,7 +1,8 @@
 import '../styles/globals.css';
 import Image from 'next/image';
 import type { AppProps } from 'next/app'
-import { ThemeProvider, GlobalStyle, List } from '@react95/core';
+import { ThemeProvider, List } from '@react95/core';
+import GlobalStyle from '@/components/R95Style';
 import { FilePencil, HtmlPage, Notepad, computer3Data } from '@react95/icons';
 import Head from 'next/head';
 import MainTaskBar from '../components/MainTaskBar';
@@ -120,11 +121,11 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           <WindowContext.Provider value={{ stack: windows, dispatch }}>
             <WindowStack windows={windows} />
             <div className="flex flex-col items-start">
-              <Icon.Wrapper onDoubleClick={(e) => router.push('/posts/welcome')}>
+              <Icon.Wrapper onDoubleClick={(e) => router.push(`/posts`)}>
                 <Icon.Box>
                   <FilePencil variant='32x32_4' />
                   <Icon.Text>
-                    welcome.txt
+                    Blog Posts
                   </Icon.Text>
                 </Icon.Box>
               </Icon.Wrapper>

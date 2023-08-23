@@ -5,22 +5,12 @@ import {
   useEffect,
   useState,
   FunctionComponentElement,
-  useRef,
-  PropsWithChildren,
-  PropsWithRef,
-  ReactNode,
-  createRef,
-  LegacyRef,
-  Ref,
-  MutableRefObject,
-  RefObject,
   useContext,
-  useCallback,
 } from "react";
-import { Modal } from '@react95/core'
+import { Modal } from "@react95/core";
 import { RenderedWindowContext, WindowContext } from "./WindowContext";
 import { nanoid } from "nanoid";
-import styled from 'styled-components';
+import styled from "styled-components";
 
 interface RenderedWindowComponent {
   id: string;
@@ -28,7 +18,13 @@ interface RenderedWindowComponent {
 }
 
 export type WindowStack = {
-  stack: Record<string, [FunctionComponent, Omit<React.ComponentProps<typeof Modal>, 'closeModal' | 'children'>]>;
+  stack: Record<
+    string,
+    [
+      FunctionComponent,
+      Omit<React.ComponentProps<typeof Modal>, "closeModal" | "children">
+    ]
+  >;
 };
 
 export const createWindowStack = (): WindowStack => {
@@ -41,13 +37,13 @@ export type WindowAction =
   | {
       type: "ADD_WINDOW";
       element: FunctionComponent<RenderedWindowComponent>;
-      props: Omit<React.ComponentProps<typeof Modal>, 'closeModal' | 'title'>;
+      props: Omit<React.ComponentProps<typeof Modal>, "closeModal" | "title">;
     }
   | {
       type: "UPDATE_WINDOW";
       id: string;
       element: FunctionComponent<RenderedWindowComponent>;
-      props: Omit<React.ComponentProps<typeof Modal>, 'closeModal' | 'title'>;
+      props: Omit<React.ComponentProps<typeof Modal>, "closeModal" | "title">;
     }
   | {
       type: "CLOSE_WINDOW";
@@ -104,7 +100,7 @@ const StyledModal = styled(Modal)`
   &&& {
     padding-bottom: 0;
   }
-`
+`;
 
 export const WindowStack = ({ windows }: WindowStackProps) => {
   const [elements, setElements] = useState<
@@ -115,32 +111,38 @@ export const WindowStack = ({ windows }: WindowStackProps) => {
 
   useEffect(() => {
     setElements((elements) => {
-      console.log(windows.stack);
       // find all entries in the windows stack that haven't been
       // added to the elements tree, and create the elements here
       const new_state = Object.entries(windows.stack).map(([i, _]) => {
         const entry = elements.find((x) => x.key === i);
         if (entry !== undefined) {
-          return entry; 
+          return entry;
         }
 
         const WindowComponent = () => {
           const windowContext = useContext(WindowContext);
           const thisWindow = windowContext.stack.stack[i];
-          if (thisWindow === undefined) return (<></>);
+          if (thisWindow === undefined) return <></>;
 
           return (
             <RenderedWindowContext.Provider value={{ id: i }}>
               <StyledModal
-                closeModal={() => windowContext.dispatch({ type: 'CLOSE_WINDOW', id: i })}
-                width={'640'}
-                height={'640'}
-                defaultPosition={{ x: (Math.floor(window.innerWidth / 2) - 550), y: Math.floor(window.innerHeight / 2) - 400 }}
+                closeModal={() =>
+                  windowContext.dispatch({ type: "CLOSE_WINDOW", id: i })
+                }
+                width={"640"}
+                height={"640"}
+                defaultPosition={{
+                  x: Math.floor(window.innerWidth / 2) - 550,
+                  y: Math.floor(window.innerHeight / 2) - 400,
+                }}
                 {...thisWindow[1]}
               >
-                <>
-                  {createElement(thisWindow[0])}
-                </>
+                <div className="h-[600px] w-full inline-block bg-white overflow-hidden">
+                  <div className="flex flex-col overflow-hidden min-w-0 min-h-0 h-full max-h-full">
+                    {createElement(thisWindow[0])}
+                  </div>
+                </div>
               </StyledModal>
             </RenderedWindowContext.Provider>
           );
