@@ -3,7 +3,7 @@ import Image from 'next/image';
 import type { AppProps } from 'next/app'
 import { ThemeProvider, List } from '@react95/core';
 import GlobalStyle from '@/components/R95Style';
-import { FilePencil, HtmlPage, Notepad, computer3Data } from '@react95/icons';
+import { FilePencil, HtmlPage, Url102, computer3Data } from '@react95/icons';
 import Head from 'next/head';
 import MainTaskBar from '../components/MainTaskBar';
 import { useEffect, useReducer } from 'react';
@@ -126,6 +126,14 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                   <FilePencil variant='32x32_4' />
                   <Icon.Text>
                     Blog Posts
+                  </Icon.Text>
+                </Icon.Box>
+              </Icon.Wrapper>
+              <Icon.Wrapper onDoubleClick={(e) => router.push(`https://hat.fo`)}>
+                <Icon.Box>
+                  <Url102 variant='32x32_4' />
+                  <Icon.Text>
+                    My website
                   </Icon.Text>
                 </Icon.Box>
               </Icon.Wrapper>
