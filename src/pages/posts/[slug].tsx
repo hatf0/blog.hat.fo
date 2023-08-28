@@ -5,7 +5,13 @@ import path from "path";
 import fs from "fs";
 import matter from "gray-matter";
 import Image from 'next/image';
-import { ReactNode } from "react";
+import { HTMLProps, ReactNode, useEffect, useRef } from "react";
+import remarkGfm from "remark-gfm";
+import remarkGithub from "remark-github/lib";
+import remarkToc from "remark-toc";
+import remarkMath from "remark-math";
+import { useRouter } from "next/router";
+import rehypeSlug from "rehype-slug";
 
 export async function getStaticPaths() {
   const files = fs.readdirSync("./posts");
@@ -33,8 +39,14 @@ export async function getStaticProps(ctx: GetStaticPropsContext) {
   const mdxSource = await serialize(content, {
     // Optionally pass remark/rehype plugins
     mdxOptions: {
-      remarkPlugins: [],
-      rehypePlugins: [],
+      remarkPlugins: [
+        remarkGfm,
+        remarkMath,
+        remarkToc
+      ],
+      rehypePlugins: [
+        rehypeSlug
+      ],
     },
     scope: JSON.parse(JSON.stringify(data)),
   });
@@ -50,22 +62,54 @@ export async function getStaticProps(ctx: GetStaticPropsContext) {
 
 const components = {
   h1: ({children, ...props}: {children?: ReactNode}) => (
-    <h1 className='font-bold text-lg' {...props}>{children}</h1>
+    <h1 className='font-bold text-3xl py-2' {...props}>{children}</h1>
   ),
   h2: ({children, ...props}: {children?: ReactNode}) => (
-    <h2 className='font-bold text-md' {...props}>{children}</h2>
+    <h2 className='font-bold text-xl py-2' {...props}>{children}</h2>
   ),
-  a: ({children, ...props}: {children?: ReactNode}) => (
-    <a className='text-blue-800 underline cursor-grab' {...props}>{children}</a>
-  )
+  h3: ({children, ...props}: {children?: ReactNode}) => (
+    <h2 className='text-lg' {...props}>{children}</h2>
+  ),
+  a: ({children, href, ...props}: {children?: ReactNode} & HTMLProps<HTMLAnchorElement>) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const router = useRouter();
+    if (href?.startsWith('#')) {
+      return (
+        <a className='text-blue-800 underline cursor-grab' onClick={(e) => router.push({ hash: href })} {...props}>{children}</a>
+      )
+    } else {
+      return (
+        <a className='text-blue-800 underline cursor-grab' href={href} {...props}>{children}</a>
+      );
+    }
+  },
+  Image
 }
 
 export default function Page({
   source,
   frontMatter
 }: InferGetStaticPropsType<typeof getStaticProps>) {
+  const content = useRef<HTMLDivElement | null>(null);
+  const router = useRouter();
+  useEffect(() => {
+    if (!content.current) return;
+
+    console.log(window.location);
+    if (window.location.hash === "") {
+      console.log('scrolling to top');
+      content.current.scrollTo({ top: 0 });
+      return;
+    }
+
+    let item = content.current?.querySelector(window.location.hash);
+    if (item) {
+      item.scrollIntoView();
+    }
+  }, [content, router.asPath]);
+
   return (
-    <div className='flex flex-col w-full h-full cursor-text select-text items-center bg-amber-400 space-y-4 overflow-scroll'>
+    <div className='flex flex-col w-full h-full cursor-text select-text items-center bg-amber-400 overflow-scroll overscroll-contain space-y-4 pb-8' ref={content}>
       <div className="flex flex-col text-center items-center border-b-2 border-black w-full font-serif">
         welcome to the
         <Image

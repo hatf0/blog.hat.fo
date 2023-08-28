@@ -138,8 +138,8 @@ export const WindowStack = ({ windows }: WindowStackProps) => {
                 }}
                 {...thisWindow[1]}
               >
-                <div className="h-[600px] w-full inline-block bg-white overflow-hidden">
-                  <div className="flex flex-col overflow-hidden min-w-0 min-h-0 h-full max-h-full">
+                <div className="h-[570px] w-full inline-block bg-white overflow-clip">
+                  <div className="flex flex-col min-w-0 min-h-0 h-full">
                     {createElement(thisWindow[0])}
                   </div>
                 </div>

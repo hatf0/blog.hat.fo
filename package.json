@@ -21,7 +21,11 @@
     "react-device-detect": "^2.2.3",
     "react-dom": "18.2.0",
     "react-syntax-highlighter": "^15.5.0",
+    "rehype-slug": "^5.1.0",
     "remark-gfm": "^3.0.1",
+    "remark-github": "^11.2.4",
+    "remark-math": "^5.1.1",
+    "remark-toc": "^8.0.1",
     "styled-components": "^5.3.11",
     "tailwind-styled-components": "^2.2.0"
   },

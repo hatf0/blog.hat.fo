@@ -18,9 +18,14 @@ const IEModal = ({ children }: IEModalProps) => {
   const router = useRouter();
   const [path, setPath] = useState(router.asPath);
 
+  useEffect(() => {
+    setPath(router.asPath);
+  }, [setPath, router.asPath])
+
   const handleChange = (evt: React.FormEvent<HTMLInputElement>) => {
     setPath(evt.currentTarget.value);
   };
+
 
   const [loading, setLoading] = useState(false);
 
@@ -79,7 +84,7 @@ const IEModal = ({ children }: IEModalProps) => {
             }}
           />
         </StyledFrame>
-        <Frame className="flex items-center justify-center">
+        <Frame className="flex items-center justify-center" onClick={(e) => router.reload()}>
           {loading ? (
             <Circle variant="16x16_4" className="animate-spin" />
           ) : (
@@ -87,9 +92,9 @@ const IEModal = ({ children }: IEModalProps) => {
           )}
         </Frame>
       </Frame>
-      <StyledFrame className="overflow-scroll" boxShadow="out" padding={4}>
+      <StyledFrame className="flex min-h-0" boxShadow="out" padding={4}>
         <StyledFrame boxShadow="in">
-          <div className="h-full bg-white">{children}</div>
+          <div className="h-full min-h-0">{children}</div>
         </StyledFrame>
       </StyledFrame>
     </>
