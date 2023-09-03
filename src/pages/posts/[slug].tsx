@@ -12,6 +12,7 @@ import remarkToc from "remark-toc";
 import remarkMath from "remark-math";
 import { useRouter } from "next/router";
 import rehypeSlug from "rehype-slug";
+import Header from "@/components/Header";
 
 export async function getStaticPaths() {
   const files = fs.readdirSync("./posts");
@@ -83,6 +84,12 @@ const components = {
       );
     }
   },
+  ul: ({children, ...props}: {children?: ReactNode}) => (
+    <ul className='list-decimal [&>*]:ml-4' {...props}>{children}</ul>
+  ),
+  li: ({children, ...props}: {children?: ReactNode}) => (
+    <li className='list-decimal' {...props}>{children}</li>
+  ), 
   Image
 }
 
@@ -109,19 +116,11 @@ export default function Page({
   }, [content, router.asPath]);
 
   return (
-    <div className='flex flex-col w-full h-full cursor-text select-text items-center bg-amber-400 overflow-scroll overscroll-contain space-y-4 pb-8' ref={content}>
-      <div className="flex flex-col text-center items-center border-b-2 border-black w-full font-serif">
-        welcome to the
-        <Image
-          src="/logo.gif"
-          alt="An animated flaming logo that says harrison zone"
-          width={456}
-          height={113}
-        />
-      </div>
-      <main className='max-w-lg font-sans'>
+    <main className='flex flex-col w-full h-full cursor-text select-text items-center bg-amber-400 overflow-scroll overscroll-contain space-y-4 pb-8' ref={content}>
+      <Header />
+      <article className='max-w-lg font-sans px-4'>
         <MDXRemote {...source} components={components} />
-      </main>
-    </div>
+      </article>
+    </main>
   );
 }

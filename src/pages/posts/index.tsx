@@ -4,6 +4,7 @@ import path from "path";
 import matter from "gray-matter";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import Header from "@/components/Header";
 
 interface Files {
   [path: string]: string;
@@ -78,16 +79,8 @@ const PostEntry = ({ file, meta }: { file: string; meta: FileMetadata }) => {
 export default function PostListing({ files }: { files: Files }) {
   return (
     <main className="flex flex-col h-full select-text bg-amber-400 cursor-text font-serif overflow-scroll disable-r95">
-      <div className="flex flex-col text-center items-center border-b-2 border-black">
-        welcome to the
-        <Image
-          src="/logo.gif"
-          alt="An animated flaming logo that says harrison zone"
-          width={456}
-          height={113}
-        />
-      </div>
-      <div className="flex justify-center text-center items-center w-full">
+      <Header />
+      <div className="flex justify-center text-center items-center w-full p-4">
         <div className="max-w-sm w-full">
           <div className="flex flex-col justify-start items-start space-y-4 pt-4">
             {Object.entries(files)

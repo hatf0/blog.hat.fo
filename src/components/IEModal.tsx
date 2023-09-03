@@ -84,9 +84,9 @@ const IEModal = ({ children }: IEModalProps) => {
             }}
           />
         </StyledFrame>
-        <Frame className="flex items-center justify-center" onClick={(e) => router.reload()}>
+        <Frame className="flex items-center justify-center" onClick={(e) => (setLoading(true), router.reload())}>
           {loading ? (
-            <Circle variant="16x16_4" className="animate-spin" />
+            <Circle variant="16x16_4" className="animate-reverse-spin" />
           ) : (
             <Circle variant="16x16_4" />
           )}

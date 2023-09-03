@@ -25,3 +25,7 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.data-footnote-backref {
+  @apply cursor-grab;
+}
